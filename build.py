@@ -1,4 +1,4 @@
 import os
 
-os.system(f'sudo make')
+os.system(f'make')
 os.system('print(\'make\')')
