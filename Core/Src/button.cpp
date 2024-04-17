@@ -9,12 +9,12 @@
 
 extern  TIM_HandleTypeDef htim1;
 
-button::button(uint32_t IdShortPress, uint32_t IdLongPress)
+button::button(uint32_t IdShortPress, uint32_t IdLongPress, uint32_t IdDoublePress)
 {
-
 	InitCAN();
 	this->IdShortPress = IdShortPress;
 	this->IdLongPress = IdLongPress;
+	this->IdDoublePress = IdDoublePress;
 }
 
 //private
@@ -45,6 +45,14 @@ bool button:: IsLongPress(uint16_t TimeCounter)
 		return false;
 }
 
+bool button:: IsDoubleShortPress(uint16_t TimeCounter)
+{
+	if(TimeCounter>= TimeForDoublePress)
+		return true;
+	else
+		return false;
+}
+
 bool button :: IsCanFreeForTransmit(CAN_HandleTypeDef *hcan)
 {
 	if(HAL_CAN_GetTxMailboxesFreeLevel(hcan)!=0)
@@ -66,22 +74,27 @@ void button :: CanTransmitStateButton(CAN_HandleTypeDef *hcan)
 {
 	if(IsShortPress(TimeCounter))
 	{
+		WasShotPress = true;
+	}
+	else if (IsDoubleShortPress(TimeCounter)) {
 		TimeCounter = 0;
+		if (WasShotPress == true)
+			PressButton.ExtId = IdDoublePress;
+		else
+			PressButton.ExtId = IdShortPress;
 		if(IsCanFreeForTransmit(hcan))
 		{
-//			HAL_TIM_Base_Stop_IT(&htim1);
-			PressButton.ExtId = IdShortPress;
-//			HAL_CAN_AddTxMessage(hcan, &PressButton, TxData, &TxMailbox);
 			if(HAL_CAN_AddTxMessage(hcan, &PressButton, TxData, &TxMailbox) == HAL_OK)
 			{
-//				 HAL_TIM_Base_Start_IT(&htim1);
-			//	HAL_CAN_AddTxMessage(hcan, &PressButton, TxData, &TxMailbox);
+				; //TODO: проверить, что тут норм
 			}
 		}
+		WasShotPress = false;
 	}
 	else if (IsLongPress(TimeCounter))
 	{
 		TimeCounter = 0;
+		//TODO: проверить необходимость WasShotPress = false;
 		if(IsCanFreeForTransmit(hcan))
 		{
 			PressButton.ExtId = IdLongPress;
@@ -91,9 +104,4 @@ void button :: CanTransmitStateButton(CAN_HandleTypeDef *hcan)
 	else {
 		TimeCounter = 0;
 	}
-
-
 }
-
-
-

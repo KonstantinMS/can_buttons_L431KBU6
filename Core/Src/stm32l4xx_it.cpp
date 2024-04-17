@@ -37,10 +37,10 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-button Button1 = button(IdShortPressButton1,IdLongPressButton1);
-button Button2 = button(IdShortPressButton2,IdLongPressButton2);
-button Button3 = button(IdShortPressButton3,IdLongPressButton3);
-button Button4 = button(IdShortPressButton4,IdLongPressButton4);
+button Button1 = button(IdShortPressButton1,IdLongPressButton1, IdDoublePressButton1);
+button Button2 = button(IdShortPressButton2,IdLongPressButton2, IdDoublePressButton2);
+button Button3 = button(IdShortPressButton3,IdLongPressButton3, IdDoublePressButton3);
+button Button4 = button(IdShortPressButton4,IdLongPressButton4, IdDoublePressButton4);
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
