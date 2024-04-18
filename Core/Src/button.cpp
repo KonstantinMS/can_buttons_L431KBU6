@@ -74,27 +74,17 @@ void button :: CanTransmitStateButton(CAN_HandleTypeDef *hcan)
 {
 	if(IsShortPress(TimeCounter))
 	{
-		WasShotPress = true;
-	}
-	else if (IsDoubleShortPress(TimeCounter)) {
 		TimeCounter = 0;
-		if (WasShotPress == true)
-			PressButton.ExtId = IdDoublePress;
-		else
-			PressButton.ExtId = IdShortPress;
 		if(IsCanFreeForTransmit(hcan))
 		{
-			if(HAL_CAN_AddTxMessage(hcan, &PressButton, TxData, &TxMailbox) == HAL_OK)
-			{
-				; //TODO: проверить, что тут норм
-			}
+			PressButton.ExtId = IdShortPress;
+			HAL_CAN_AddTxMessage(hcan, &PressButton, TxData, &TxMailbox);
 		}
-		WasShotPress = false;
 	}
+	
 	else if (IsLongPress(TimeCounter))
 	{
 		TimeCounter = 0;
-		//TODO: проверить необходимость WasShotPress = false;
 		if(IsCanFreeForTransmit(hcan))
 		{
 			PressButton.ExtId = IdLongPress;
