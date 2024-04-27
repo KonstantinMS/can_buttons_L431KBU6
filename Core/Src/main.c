@@ -65,9 +65,18 @@ static void MX_TIM1_Init(void);
 /* USER CODE BEGIN 0 */
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
+  uint32_t msgId = 0;
 	if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData) == HAL_OK)
 	{
-
+    if (RxHeader.IDE == AnswerIdCurrentState)
+    {
+      if(HAL_CAN_GetTxMailboxesFreeLevel(hcan)!=0)
+      {
+        TxHeader.ExtId = RxHeader.ExtId;
+        TxData[0] = AnswerDataCurrentState; 
+        HAL_CAN_AddTxMessage(hcan, &TxHeader, TxData, &TxMailbox);
+      }
+    }
 	}
 }
 

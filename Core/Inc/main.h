@@ -47,13 +47,13 @@ extern "C" {
 #define IdLongPressButton3 0x03006004
 #define IdLongPressButton4 0x03007004
 
-#define IdDoublePressButton1 0x03008004
-#define IdDoublePressButton2 0x03009004
-#define IdDoublePressButton3 0x0300A004
-#define IdDoublePressButton4 0x0300B004
+#define IdDoublePressButton1 0x0300A004
+#define IdDoublePressButton2 0x0300B004
+#define IdDoublePressButton3 0x0300C004
+#define IdDoublePressButton4 0x0300D004
 
 #define AnswerIdCurrentState 0x03008004   // Сообщение о текущем состоянии
-#define AnswerDataCurrentState 0x1        // Версия прошивки
+#define AnswerDataCurrentState 0x2        // Версия прошивки
 #define RequestCurrentStateMU 0x03000100  //Запрос о текущем состоянии МУ
 /* USER CODE END ET */
 
